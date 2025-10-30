@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: taskok-api
+    runtime: docker
+    buildCommand: "docker build -t taskok ."
+    startCommand: "npm start"
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        generateValue: true
+      - key: MONGO_URI
+        sync: false # Configurar manualmente en Render dashboard
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGIN
+        fromService:
+          type: web
+          name: taskok-api
+          property: host
+    healthCheckPath: /api/health
+    disk:
+      name: taskok-data
+      mountPath: /data
+      sizeGB: 1

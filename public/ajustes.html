@@ -1,0 +1,32 @@
+<!-- Página de ajustes y perfil de usuario -->
+<!-- Muestra información del perfil y historial de actividades -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ajustes del Perfil</title>
+  <!-- Carga de TailwindCSS para estilos responsivos -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<!-- Cuerpo con tema oscuro -->
+<body class="bg-gray-900 text-white">
+  <!-- Navegación principal -->
+  <nav class="flex justify-around bg-gray-800 py-3">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/mis-tareas">Mis Tareas</a>
+    <a href="/ajustes" class="text-green-400">Ajustes</a>
+    <button onclick="logout()">Salir</button>
+  </nav>
+  <!-- Contenido principal -->
+  <div class="p-6">
+    <h1 class="text-2xl mb-4">Perfil & Historial</h1>
+    <!-- Información del usuario -->
+    <p>Email: <span id="userEmail"></span></p>
+    <!-- Sección de historial -->
+    <h2 class="mt-6 text-xl">Historial</h2>
+    <ul id="historial"></ul>
+  </div>
+  <!-- Carga del script de ajustes -->
+  <script src="./js/ajustes.js"></script>
+</body>
+</html>

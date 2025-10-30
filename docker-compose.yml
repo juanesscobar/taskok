@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  # Base de datos MongoDB para desarrollo
+  mongo:
+    image: mongo:6
+    container_name: taskok-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: taskok
+    volumes:
+      - mongo_data:/data/db
+      - ./docker/mongo-init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - taskok-network
+
+  # Aplicación TaskOK
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: taskok-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      MONGO_URI: mongodb://admin:password123@mongo:27017/taskok?authSource=admin
+    depends_on:
+      mongo:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - taskok-network
+    command: npm run dev
+
+  # Redis para sesiones y cache (opcional)
+  redis:
+    image: redis:7-alpine
+    container_name: taskok-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+      - taskok-network
+
+volumes:
+  mongo_data:
+  redis_data:
+
+networks:
+  taskok-network:
+    driver: bridge

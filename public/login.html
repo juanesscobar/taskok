@@ -1,0 +1,63 @@
+<!-- Página de login alternativa para TaskOk -->
+<!-- Proporciona interfaz simplificada de autenticación con diseño oscuro -->
+<!DOCTYPE html>
+<html lang="es" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iniciar sesión - TaskOk</title>
+    <!-- Carga de TailwindCSS para estilos responsivos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <!-- Cuerpo con diseño centrado y tema oscuro -->
+  <body
+    class="flex items-center justify-center min-h-screen bg-gray-900 text-gray-100"
+  >
+    <!-- Contenedor principal del formulario de login -->
+    <div
+      class="w-full max-w-sm bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-700"
+    >
+      <!-- Título de la aplicación -->
+      <h1 class="text-3xl font-bold text-center mb-6 text-green-400">
+        TaskOk
+      </h1>
+      <!-- Formulario de inicio de sesión -->
+      <form id="loginForm" class="space-y-4">
+        <!-- Campo de correo electrónico -->
+        <div>
+          <label class="block text-sm mb-1">Correo electrónico</label>
+          <input
+            type="email"
+            name="email"
+            class="w-full px-3 py-2 rounded-md bg-gray-700 text-white focus:ring-2 focus:ring-green-400"
+            required
+          />
+        </div>
+        <!-- Campo de contraseña -->
+        <div>
+          <label class="block text-sm mb-1">Contraseña</label>
+          <input
+            type="password"
+            name="password"
+            class="w-full px-3 py-2 rounded-md bg-gray-700 text-white focus:ring-2 focus:ring-green-400"
+            required
+          />
+        </div>
+        <!-- Botón de envío -->
+        <button
+          type="submit"
+          class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded-md"
+        >
+          Iniciar sesión
+        </button>
+      </form>
+      <!-- Mensaje de error oculto por defecto -->
+      <p id="error" class="mt-4 text-center text-red-400 hidden">
+        Credenciales inválidas
+      </p>
+    </div>
+
+    <!-- Carga del script de autenticación -->
+    <script src="js/auth.js"></script>
+  </body>
+</html>

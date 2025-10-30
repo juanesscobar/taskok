@@ -1,0 +1,44 @@
+<!-- Página alternativa del dashboard con navegación por pestañas -->
+<!-- Implementa un sistema de pestañas dinámicas para diferentes secciones -->
+<!DOCTYPE html>
+<html lang="es" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel - HR Clock</title>
+    <!-- Carga de TailwindCSS para estilos responsivos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <!-- Cuerpo principal con layout de columna y tema oscuro -->
+  <body
+    class="bg-gray-900 text-gray-100 font-sans flex flex-col min-h-screen"
+  >
+    <!-- Header con título y botón de logout -->
+    <header
+      class="flex justify-between items-center px-4 py-3 border-b border-gray-800"
+    >
+      <h1 class="text-green-400 text-xl font-bold">HR Clock</h1>
+      <button
+        id="logoutBtn"
+        class="bg-gray-700 hover:bg-gray-600 text-sm px-3 py-1 rounded"
+      >
+        Cerrar sesión
+      </button>
+    </header>
+
+    <!-- Navegación por pestañas -->
+    <nav
+      class="flex justify-around bg-gray-800 text-gray-400 border-b border-gray-700"
+    >
+      <button class="tab-btn py-3 flex-1" data-tab="dashboard">Dashboard</button>
+      <button class="tab-btn py-3 flex-1" data-tab="tasks">Mis tareas</button>
+      <button class="tab-btn py-3 flex-1" data-tab="profile">Perfil</button>
+    </nav>
+
+    <!-- Contenido dinámico de las pestañas -->
+    <main id="tabContent" class="flex-1 overflow-y-auto"></main>
+
+    <!-- Carga del script principal de navegación por pestañas -->
+    <script src="js/main.js"></script>
+  </body>
+</html>

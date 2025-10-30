@@ -1,0 +1,152 @@
+<!-- Página de gestión de tareas con vista Kanban -->
+<!-- Permite visualizar, editar y gestionar tareas mediante drag & drop -->
+<!DOCTYPE html>
+<html lang="es" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mis Tareas - HR Clock</title>
+    <!-- Carga de TailwindCSS para estilos responsivos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Carga de configuración global de la aplicación -->
+    <script src="config.js"></script>
+  </head>
+  <!-- Cuerpo principal con layout de columna y tema oscuro -->
+  <body class="bg-gray-900 text-gray-100 font-sans flex flex-col min-h-screen">
+    <!-- Header con título y botón de logout -->
+    <header class="flex justify-between items-center px-4 py-3 border-b border-gray-800">
+      <h1 class="text-green-400 text-xl font-bold">HR Clock</h1>
+      <button id="logout" class="bg-gray-700 hover:bg-gray-600 text-sm px-3 py-1 rounded">
+        Cerrar sesión
+      </button>
+    </header>
+
+    <!-- Navegación secundaria con indicador de página activa -->
+    <nav class="flex justify-around bg-gray-800 text-gray-400 border-b border-gray-700">
+      <a href="/dashboard" class="py-3 flex-1 text-center hover:text-green-400">Dashboard</a>
+      <a href="/mis-tareas" class="py-3 flex-1 text-center text-green-400 font-semibold">Mis Tareas</a>
+      <a href="/ajustes" class="py-3 flex-1 text-center hover:text-green-400">Ajustes</a>
+    </nav>
+
+    <!-- Vista principal del tablero Kanban -->
+    <main class="flex-1 overflow-hidden p-6">
+      <div class="h-full grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Columna de tareas pendientes -->
+        <div class="bg-gray-800 rounded-lg border border-gray-700 flex flex-col">
+          <div class="p-4 border-b border-gray-700">
+            <h2 class="text-lg font-bold text-yellow-400">› Pendientes</h2>
+            <span id="pending-count" class="text-sm text-gray-400"></span>
+          </div>
+          <!-- Área droppable para drag & drop -->
+          <div id="pending-column" class="flex-1 p-4 space-y-3 overflow-y-auto"
+                ondrop="handleDrop(event, 'pending')"
+                ondragover="handleDragOver(event)"
+                ondragenter="handleDragEnter(event)">
+          </div>
+        </div>
+
+        <!-- Columna de tareas en proceso -->
+        <div class="bg-gray-800 rounded-lg border border-gray-700 flex flex-col">
+          <div class="p-4 border-b border-gray-700">
+            <h2 class="text-lg font-bold text-blue-400">› En Proceso</h2>
+            <span id="in-progress-count" class="text-sm text-gray-400"></span>
+          </div>
+          <!-- Área droppable para drag & drop -->
+          <div id="in-progress-column" class="flex-1 p-4 space-y-3 overflow-y-auto"
+                ondrop="handleDrop(event, 'in_progress')"
+                ondragover="handleDragOver(event)"
+                ondragenter="handleDragEnter(event)">
+          </div>
+        </div>
+
+        <!-- Columna de tareas completadas -->
+        <div class="bg-gray-800 rounded-lg border border-gray-700 flex flex-col">
+          <div class="p-4 border-b border-gray-700">
+            <h2 class="text-lg font-bold text-green-400">› Completadas</h2>
+            <span id="completed-count" class="text-sm text-gray-400"></span>
+          </div>
+          <!-- Área droppable para drag & drop -->
+          <div id="completed-column" class="flex-1 p-4 space-y-3 overflow-y-auto"
+                ondrop="handleDrop(event, 'completed')"
+                ondragover="handleDragOver(event)"
+                ondragenter="handleDragEnter(event)">
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Modal de edición de tareas (inicialmente oculto) -->
+    <div id="taskModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+      <div class="bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4 border border-gray-700">
+        <!-- Header del modal con título y botón de cerrar -->
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-bold">Editar Tarea</h3>
+          <button id="closeModal" class="text-gray-400 hover:text-gray-200">
+            <!-- Icono SVG de cerrar -->
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Formulario de edición de tarea -->
+        <form id="taskForm">
+          <!-- Campo título con validación -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium mb-2">Título</label>
+            <input type="text" id="modalTitle" class="w-full px-3 py-2 rounded bg-gray-900 border border-gray-700 focus:border-green-400 focus:outline-none" required>
+            <div id="titleError" class="text-red-400 text-sm mt-1 hidden">El título es requerido</div>
+          </div>
+
+          <!-- Campo descripción -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium mb-2">Descripción</label>
+            <textarea id="modalDescription" rows="3" class="w-full px-3 py-2 rounded bg-gray-900 border border-gray-700 focus:border-green-400 focus:outline-none"></textarea>
+          </div>
+
+          <!-- Selector de estado -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium mb-2">Estado</label>
+            <select id="modalStatus" class="w-full px-3 py-2 rounded bg-gray-900 border border-gray-700 focus:border-green-400 focus:outline-none">
+              <option value="pending">Pendiente</option>
+              <option value="in_progress">En progreso</option>
+              <option value="completed">Completada</option>
+            </select>
+          </div>
+
+          <!-- Campo enlace opcional -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium mb-2">Enlace (opcional)</label>
+            <input type="url" id="modalLink" class="w-full px-3 py-2 rounded bg-gray-900 border border-gray-700 focus:border-green-400 focus:outline-none">
+          </div>
+
+          <!-- Área de mensajes de estado -->
+          <div id="modalMessage" class="text-sm mb-4 hidden"></div>
+
+          <!-- Botones de acción del modal -->
+          <div class="flex gap-3">
+            <button type="submit" id="saveBtn" class="flex-1 bg-green-600 hover:bg-green-500 px-4 py-2 rounded text-white disabled:opacity-50">
+              Guardar
+            </button>
+            <button type="button" id="cancelBtn" class="px-4 py-2 rounded bg-gray-600 hover:bg-gray-500 text-white">
+              Cancelar
+            </button>
+            <button type="button" id="deleteBtn" class="px-4 py-2 rounded bg-red-600 hover:bg-red-500 text-white">
+              Eliminar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Script inline para funcionalidad básica de logout -->
+    <script>
+      document.getElementById("logout").addEventListener("click", () => {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+      });
+    </script>
+    <!-- Carga del script principal de gestión de tareas -->
+    <script src="js/tareas.js"></script>
+  </body>
+</html>

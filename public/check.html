@@ -1,0 +1,42 @@
+<!-- Archivo check.html parece estar corrupto o mal estructurado -->
+<!-- Contiene código JavaScript suelto y estructura HTML incompleta -->
+<!-- Este archivo requiere revisión completa para determinar su propósito -->
+<!-- Archivo check.html parece estar corrupto - contiene código JavaScript suelto sin estructura HTML válida -->
+<!-- Se recomienda revisar y reconstruir este archivo completamente -->
+const tabContent = document.getElementById("tabContent");
+const buttons = document.querySelectorAll(".tab-btn");
+
+buttons.forEach((btn) =>
+  btn.addEventListener("click", () => {
+    buttons.forEach((b) => b.classList.remove("text-green-400", "border-b-2", "border-green-400"));
+    btn.classList.add("text-green-400", "border-b-2", "border-green-400");
+
+    loadTab(btn.dataset.tab);
+  })
+);
+
+async function loadTab(tab) {
+  const res = await fetch(`partials/${tab}.html`);
+  const html = await res.text();
+  tabContent.innerHTML = html;
+
+  // Si es dashboard, inicializamos su lógica
+  if (tab === "dashboard") {
+    const { initDashboard } = await import("./dashboard.js");
+    initDashboard();
+  }
+}
+
+document.getElementById("logoutBtn").addEventListener("click", () => {
+  localStorage.removeItem("token");
+  window.location.href = "login.html";
+});
+
+// Cargar primera pestaña
+loadTab("dashboard");
+</script>
+  </body>
+</html>
+<!-- ERROR: Estructura HTML inválida - falta DOCTYPE y elementos de apertura -->
+<!DOCTYPE html>
+<html lang="es">

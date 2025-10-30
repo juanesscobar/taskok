@@ -1,0 +1,103 @@
+<!-- Página principal del dashboard para gestión de tareas y asistencia -->
+<!-- Incluye funcionalidades de check-in/out, creación de tareas y listado por estados -->
+<!DOCTYPE html>
+<html lang="es" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel - HR Clock</title>
+    <!-- Carga de TailwindCSS para estilos responsivos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Carga de configuración global de la aplicación -->
+    <script src="config.js"></script>
+  </head>
+  <!-- Cuerpo principal con layout de columna y tema oscuro -->
+  <body class="bg-gray-900 text-gray-100 font-sans flex flex-col min-h-screen">
+    <!-- Header con título y botón de logout -->
+    <header class="flex justify-between items-center px-4 py-3 border-b border-gray-800">
+      <h1 class="text-green-400 text-xl font-bold">HR Clock</h1>
+      <button id="logout" class="bg-gray-700 hover:bg-gray-600 text-sm px-3 py-1 rounded">
+        Cerrar sesión
+      </button>
+    </header>
+
+    <!-- Navegación secundaria entre secciones principales -->
+    <nav class="flex justify-around bg-gray-800 text-gray-400 border-b border-gray-700">
+      <a href="/dashboard" class="py-3 flex-1 text-center hover:text-green-400">Dashboard</a>
+      <a href="/mis-tareas" class="py-3 flex-1 text-center hover:text-green-400">Mis Tareas</a>
+      <a href="/ajustes" class="py-3 flex-1 text-center hover:text-green-400">Ajustes</a>
+    </nav>
+
+    <!-- Contenido principal del dashboard -->
+    <main id="tabContent" class="flex-1 overflow-y-auto p-6">
+      <!-- Sección de marcación de asistencia -->
+      <section class="mb-8 bg-gray-800 rounded p-4 border border-gray-700">
+        <h2 class="text-xl font-bold mb-3">Asistencia</h2>
+        <div class="flex items-center gap-3">
+          <button id="btnAttendance" class="bg-green-600 hover:bg-green-500 px-4 py-2 rounded text-white">
+            Marcar asistencia
+          </button>
+          <span id="attendanceStatus" class="text-sm text-gray-300"></span>
+        </div>
+      </section>
+
+      <!-- Sección de creación de nueva tarea -->
+      <section class="mb-8 bg-gray-800 rounded p-4 border border-gray-700">
+        <h2 class="text-xl font-bold mb-3">Nueva tarea</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <!-- Campo título de la tarea -->
+          <div class="col-span-1">
+            <label class="block text-sm mb-1">Título</label>
+            <input id="taskTitle" class="w-full px-3 py-2 rounded bg-gray-900 border border-gray-700" placeholder="Título de la tarea" />
+          </div>
+          <!-- Selector de estado de la tarea -->
+          <div class="col-span-1">
+            <label class="block text-sm mb-1">Estado</label>
+            <select id="taskStatus" class="w-full px-3 py-2 rounded bg-gray-900 border border-gray-700">
+              <option value="pending">Pendiente</option>
+              <option value="in_progress">En progreso</option>
+              <option value="completed">Completada</option>
+            </select>
+          </div>
+          <!-- Campo descripción de la tarea -->
+          <div class="col-span-1 md:col-span-2">
+            <label class="block text-sm mb-1">Descripción</label>
+            <textarea id="taskDescription" rows="3" class="w-full px-3 py-2 rounded bg-gray-900 border border-gray-700" placeholder="Descripción opcional"></textarea>
+          </div>
+          <!-- Campo enlace opcional -->
+          <div class="col-span-1 md:col-span-2">
+            <label class="block text-sm mb-1">Link</label>
+            <input id="taskLink" type="url" class="w-full px-3 py-2 rounded bg-gray-900 border border-gray-700" placeholder="https://..." />
+          </div>
+        </div>
+        <!-- Botón de creación y mensaje de estado -->
+        <div class="mt-3 flex items-center gap-3">
+          <button id="btnCreateTask" class="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded text-white">
+            Crear tarea
+          </button>
+          <span id="taskCreateMsg" class="text-sm text-gray-300"></span>
+        </div>
+      </section>
+
+      <!-- Listado de tareas agrupadas por estado -->
+      <h2 class="text-2xl font-bold mb-4">› PENDING</h2>
+      <div id="tasksPending" class="mb-6"></div>
+
+      <h2 class="text-2xl font-bold mb-4">› IN_PROGRESS</h2>
+      <div id="tasksInProgress" class="mb-6"></div>
+
+      <h2 class="text-2xl font-bold mb-4">› COMPLETED</h2>
+      <div id="tasksCompleted" class="mb-6"></div>
+    </main>
+
+    <!-- Script inline para funcionalidad básica de logout -->
+    <script>
+      document.getElementById("logout").addEventListener("click", () => {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+      });
+    </script>
+    <!-- Carga del script principal del dashboard -->
+    <script src="js/dashboard.js"></script>
+  </body>
+</html>

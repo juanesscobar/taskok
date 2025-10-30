@@ -1,0 +1,31 @@
+/* Estilos CSS básicos para elementos de formulario y layout */
+/* Archivo de estilos complementarios para la aplicación TaskOk */
+
+body {
+  font-family: Arial, sans-serif; /* Fuente principal para el cuerpo */
+  text-align: center; /* Alineación centrada del texto */
+  padding: 50px; /* Espaciado interno del body */
+  background-color: #f5f7fa; /* Color de fondo claro */
+  color: #333; /* Color de texto principal */
+}
+
+/* Estilos para inputs y botones */
+input, button {
+  margin: 8px; /* Margen alrededor de los elementos */
+  padding: 10px; /* Espaciado interno */
+  border-radius: 8px; /* Bordes redondeados */
+  border: 1px solid #ccc; /* Borde gris claro */
+}
+
+/* Estilos específicos para botones */
+button {
+  background-color: #0066ff; /* Color de fondo azul */
+  color: white; /* Texto blanco */
+  cursor: pointer; /* Cursor de puntero */
+  transition: 0.3s; /* Transición suave para efectos hover */
+}
+
+/* Efecto hover para botones */
+button:hover {
+  background-color: #004ecc; /* Color más oscuro al pasar el mouse */
+}

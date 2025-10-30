@@ -1,0 +1,37 @@
+<!-- Página de verificación de estado del servidor (health check) -->
+<!-- Realiza una petición a la API para verificar conectividad y estado del backend -->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Health Check - TaskOk</title>
+  </head>
+  <body>
+    <!-- Carga de configuración global -->
+    <script src="config.js"></script>
+    <!-- Script principal de health check -->
+    <script>
+      (function () {
+        // Determinar URL base de la API desde configuración
+        const apiBase = (window.VITE_API_URL || window.NEXT_PUBLIC_API_URL || 'http://localhost:3000').replace(/\/+$/, '');
+        const url = apiBase + '/api/health';
+        // Función auxiliar para actualizar el contenido del body
+        const set = (text) => { document.body.textContent = text; };
+
+        // Mostrar estado de carga inicial
+        set('{"loading": true}');
+
+        // Realizar petición fetch al endpoint de health
+        fetch(url, { credentials: 'include' })
+          .then(res => {
+            if (!res.ok) {
+              return res.text().then(t => { throw new Error('HTTP ' + res.status + ': ' + t); });
+            }
+            return res.text(); // Mostrar exactamente el JSON plano que envía la API
+          })
+          .then(text => set(text))
+          .catch(err => set(JSON.stringify({ ok: false, error: err.message })));
+      })();
+    </script>
+  </body>
+</html>
