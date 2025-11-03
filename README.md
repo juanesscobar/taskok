@@ -495,9 +495,8 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 
 **Juan Andrés Escobar Vega**
 
-- **Email**: juan.escobar@example.com
+- **Email**: escobarbvega.juanandres21@gmail.com
 - **GitHub**: [@juanescobar](https://github.com/juanescobar)
-- **LinkedIn**: [Juan Escobar](https://linkedin.com/in/juanescobar)
 
 ---
 
